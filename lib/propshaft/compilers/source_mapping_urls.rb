@@ -10,7 +10,13 @@ class Propshaft::Compilers::SourceMappingUrls
   end
 
   def compile(logical_path, input)
-    input.gsub(SOURCE_MAPPING_PATTERN) { source_mapping_url(asset_path($2, logical_path), $1) }
+    input.gsub(SOURCE_MAPPING_PATTERN) do |line|
+      if Propshaft::Asset::PREDIGESTED_REGEX.match?($2)
+        line # pass through untouched
+      else
+        source_mapping_url(asset_path($2, logical_path), $1)
+      end
+    end
   end
 
   private

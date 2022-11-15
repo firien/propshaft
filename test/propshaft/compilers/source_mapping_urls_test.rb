@@ -7,7 +7,7 @@ require "propshaft/compilers"
 class Propshaft::Compilers::SourceMappingUrlsTest < ActiveSupport::TestCase
   setup do
     @assembly = Propshaft::Assembly.new(ActiveSupport::OrderedOptions.new.tap { |config| 
-      config.paths = [ Pathname.new("#{__dir__}/../../fixtures/assets/mapped") ]
+      config.paths = [ Pathname.new("#{__dir__}/../../fixtures/assets/mapped"), Pathname.new("#{__dir__}/../../fixtures/assets/pre_digested")]
       config.output_path = Pathname.new("#{__dir__}/../../fixtures/output")
       config.prefix = "/assets"
     })
@@ -44,4 +44,11 @@ class Propshaft::Compilers::SourceMappingUrlsTest < ActiveSupport::TestCase
     assert_match %r{sourceMappingURL=sourceMappingURL-not-at-start.css.map},
                  @assembly.compilers.compile(find_asset("sourceMappingURL-not-at-start.css", fixture_path: "mapped"))
   end
+
+  test "sourceMappingURL pre digested" do
+    asset = @assembly.load_path.find("b.js")
+    assert_match %r{sourceMappingURL=b-IYZHHFAO.digested.js.map},
+                 @assembly.compilers.compile(asset)
+  end
+
 end
