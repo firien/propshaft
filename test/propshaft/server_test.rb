@@ -7,7 +7,9 @@ class Propshaft::ServerTest < ActiveSupport::TestCase
 
   setup do
     @assembly = Propshaft::Assembly.new(ActiveSupport::OrderedOptions.new.tap { |config|
-      config.paths = [Pathname.new("#{__dir__}/../fixtures/assets/vendor"), Pathname.new("#{__dir__}/../fixtures/assets/first_path")]
+      config.paths = [Pathname.new("#{__dir__}/../fixtures/assets/vendor"),
+        Pathname.new("#{__dir__}/../fixtures/assets/first_path"),
+        Pathname.new("#{__dir__}/../fixtures/assets/pre_digested")]
       config.output_path = Pathname.new("#{__dir__}../fixtures/output")
     })
 
@@ -51,6 +53,11 @@ class Propshaft::ServerTest < ActiveSupport::TestCase
     asset = @assembly.load_path.find("foobar/source/test.css")
     get "/#{asset.logical_path}"
     assert_equal 404, last_response.status
+  end
+
+  test "pre digested source map" do
+    get "/b-IYZHHFAO.digested.js.map"
+    assert_equal 200, last_response.status
   end
 
   private

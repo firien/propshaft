@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../b.js"],
+  "sourcesContent": ["import * as a from './a.js'\na.test(2, 3)\n"],
+  "mappings": "AAAA,YAAY,OAAO;AACnB,EAAE,KAAK,GAAG,CAAC;",
+  "names": []
+}
