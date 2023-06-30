@@ -30,7 +30,7 @@ class Propshaft::Asset
   end
 
   def digested_path
-    logical_path.sub(/\.(\w+)$/) { |ext| "-#{digest}#{ext}" }
+    logical_path.sub(/\.(\w+(\.map)?)$/) { |ext| "-#{digest}#{ext}" }
   end
 
   def fresh?(digest)
